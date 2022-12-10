@@ -22,6 +22,7 @@ df_result = pd.DataFrame()
 
 app = dash.Dash(__name__, suppress_callback_exceptions=True)
 app.title = '数据科学大作业——房价预测'
+server = app.server
 
 app.layout = html.Div(
     children=[

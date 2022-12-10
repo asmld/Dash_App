@@ -1,5 +1,8 @@
-Gunicorn
-Dash
-Pandas
-Numpy
-Scikit-learn
+gunicorn
+dash
+pandas
+numpy
+scikit-learn
+pickle
+base64
+io

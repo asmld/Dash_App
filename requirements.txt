@@ -1,0 +1,5 @@
+Gunicorn
+Dash
+Pandas
+Numpy
+Scikit-learn

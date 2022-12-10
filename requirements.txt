@@ -3,6 +3,3 @@ dash
 pandas
 numpy
 scikit-learn
-pickle
-base64
-io

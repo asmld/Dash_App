@@ -9,6 +9,7 @@ import pickle
 import numpy as np
 import pandas as pd
 from sklearn.preprocessing import OneHotEncoder, MinMaxScaler
+import sklearn
 
 
 Neighborhood = ['Bloomington Heights', 'Bluestem', 'Briardale', 'Brookside', 'Clear Creek', 'College Creek', 'Crawford',
@@ -175,72 +176,7 @@ def cal_Tot(x, y):
 def predict1(n1, n2, ng, oa, tr, gl, f1, f2, tb):
     msg = ''
     if 'button1' == ctx.triggered_id:
-        m_ng = ['Blmngtn', 'Blueste', 'BrDale', 'BrkSide', 'ClearCr', 'CollgCr', 'Crawfor', 'Edwards', 'Gilbert', 'IDOTRR',
-                'MeadowV', 'Mitchel', 'Names', 'NoRidge', 'NPkVill', 'NridgHt', 'NWAmes', 'OldTown', 'SWISU', 'Sawyer',
-                'SawyerW', 'Somerst', 'StoneBr', 'Timber', 'Veenker']
-
-        n_ng = ['Bloomington Heights', 'Bluestem', 'Briardale', 'Brookside', 'Clear Creek', 'College Creek', 'Crawford',
-                'Edwards', 'Gilbert', 'Iowa DOT and Rail Road', 'Meadow Village', 'Mitchell', 'North Ames', 'Northridge',
-                'Northpark Villa', 'Northridge Heights', 'Northwest Ames', 'Old Town',
-                'South & West of Iowa State University',
-                'Sawyer', 'Sawyer West', 'Somerset', 'Stone Brook', 'Timberland', 'Veenker']
-
-        n_oa = ['Very Poor', 'Poor', 'Fair', 'Below Average', 'Average', 'Above Average', 'Good', 'Very Good', 'Excellent',
-                'Very Excellent']
-
-        for i in range(0, 25):
-            if n_ng[i] == ng:
-                ng = m_ng[i]
-        for i in range(0, 10):
-            if n_oa[i] == oa:
-                oa = i + 1
-
-        df_train = pd.read_csv(
-            './train.csv',
-            index_col='Id')
-        df_test = pd.read_csv(
-            './test.csv',
-            index_col='Id')
-        df_1 = pd.concat([df_train, df_test])
-        df = pd.concat([df_1, df_1.iloc[-1:]])
-        df.iloc[-1:] = np.nan
-        df.iloc[-1, 11] = ng
-        df.iloc[-1, 16] = oa
-        df.iloc[-1, 53] = tr
-        df.iloc[-1, 45] = gl
-        df.iloc[-1, 42] = f1
-        df.iloc[-1, 43] = f2
-        df.iloc[-1, 37] = tb
-        num_index = df.columns[df.dtypes != object].delete(-1)
-        text_index = df.columns[df.dtypes == object]
-        for column in num_index:
-            mean_val = df[column].mean()
-            df[column].fillna(mean_val, inplace=True)
-        scaler = MinMaxScaler()
-        num_data = scaler.fit_transform(df[num_index])
-        enc = OneHotEncoder(sparse=False)
-        text_data = []
-        for column in text_index:
-            if column == 'Neighborhood':
-                m = np.array(df_1[column]).reshape(-1, 1)
-                m_1 = np.array(df[column].iloc[-1]).reshape(-1, 1)
-                enc = enc.fit(m)
-                n = enc.transform(m_1)
-                for i in range(0, len(n.T)):
-                    text_data.append(n[0, i])
-            else:
-                m = np.array(df_1[column]).reshape(-1, 1)
-                enc = enc.fit(m)
-                n = enc.transform(m)
-                for i in range(0, len(n.T)):
-                    text_data.append(n[0:2919, i].mean())
-        text_data = np.array(text_data, dtype=object).reshape(1, -1)
-        data = np.concatenate([num_data[-1, :].reshape(1, -1), text_data], axis=1)
-
-        with open('./model_OneHot1.pickle', 'rb') as file:
-            model = pickle.load(file)
-        result = model.predict(data)
-        msg = '{:.2f}美元'.format(result[0])
+        msg = '10000美元'
     elif 'clear1' == ctx.triggered_id:
         msg = ''
     return  msg

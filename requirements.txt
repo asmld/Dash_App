@@ -3,3 +3,4 @@ dash
 pandas
 numpy
 scikit-learn
+openpyxl

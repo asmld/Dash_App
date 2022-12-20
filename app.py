@@ -39,19 +39,42 @@ markdown = '''
 
 + 房源数据来源为训练集数据以及经过准确率最高的模型（随机森林）预测后的训练数据
 + 地面以上居住面积不可调整，默认为一层居住面积与二层居住面积之和
-+ 如果输出结果只有列名说明没有在房源数据集中找到合适的房源，尝试扩大各参数的房源
++ 如果输出结果只有列名说明没有在房源数据集中找到合适的房源，尝试扩大各参数的范围
 
 ## 模型说明
 
 ### 深度神经网络
 
-+ 说明
-+ 准确率：……
++ MLP是神经网络的一种，它最主要的特点是有多个神经元层，因此也叫**深度神经网络**。
++ 神经网络的预测能力来自网络的分层或多层结构，输入层接收数据，中间层计算数据，输出层输出结果。
++ 训练模型时，通过前向传播沿着计算图正向计算所有变量，**反向传播**时计算这些变量对应的梯度，交替进行前向传播和反向传播，利用反向传播给出的梯度来更新模型参数，直到得到最准确的预测结果，流程如下：
+  1. 获取输入数据
+  2. 设计网络结构：如设置隐藏层的数量、epoch次数以及学习率等等
+  3. 训练模型并获得预测值
+  4. 计算损失值：使用事先选好的损失函数来计算预测值与真值之间的差距
+  5. 清零、计算并更新梯度
+  6. 重复 3 ~ 5 的过程epoch次
++ Kaggle准确率：0.1646
 
 ### 随机森林
 
-+ 说明
-+ 准确率：……
++ 随机森林就是通过集成学习的 Bagging 思想将多棵**决策树**集成在一起的一种算法
++ 基本单元就是决策树，将一个输入样本进行分类，就需要将它输入到每棵树中进行分类
++ 将若干个弱分类器的分类结果进行投票选择，从而组成一个**强分类器**，这就是随机森林 Bagging 的思想
++ 实现方法
+  1. 一个样本容量为 N 的样本，有放回的抽取 N 次，每次抽取 1 个，最终形成了 N 个样本。这选择好了的 N 个样本用来训练一个决策树，作为决策树根节点处的样本。
+  2. 当每个样本有 M 个属性时，在决策树的每个节点需要分裂时，随机从这 M 个属性中选取出 m 个属性，满足条件 m << M。然后从这 m 个属性中采用某种策略来选择 1 个属性作为该节点的分裂属性。
+  3. 决策树形成过程中每个节点都要按照步骤 2 来分裂。一直到不能够再分裂为止，整个决策树形成过程中没有进行剪枝。
+  4. 按照步骤 1~3 建立大量的决策树，就构成了随机森林。
++ 优点：
+  1. 它可以判断特征的重要程度以及不同特征之间的相互影响
+  2. 相比决策树不容易过拟合
+  3. 训练速度比较快，实现简单
+  4. 对缺失值不敏感，如果有很大一部分的特征遗失，仍可以维持准确度。
++ 缺点：
+  1. 随机森林在某些噪音较大的分类或回归问题上会过拟合
+  2. 对于有不同取值的属性的数据，取值划分较多的属性会对随机森林产生更大的影响，所以随机森林在这种数据上产出的属性权值是不可信的
++ Kaggle准确率：0.1458
 '''
 
 Neighborhood = ['Bloomington Heights', 'Bluestem', 'Briardale', 'Brookside', 'Clear Creek', 'College Creek', 'Crawford',
@@ -292,13 +315,13 @@ def render_content(tab):
             ],style={'columnCount': 1}),
             html.Div([
                 html.P(),html.Label('地面以上总居住面积（平方英尺）：', className='option_label'),html.P(),
-                dcc.RangeSlider(min=300, max=8000, value=[2000, 4000], step=1, marks=None, id='GrLiv_query', tooltip={"placement": "bottom", "always_visible": True}, disabled=True),
+                dcc.RangeSlider(min=300, max=8000, value=[300, 7000], step=1, marks=None, id='GrLiv_query', tooltip={"placement": "bottom", "always_visible": True}, disabled=True),
                 html.P(),html.Label('一层总居住面积（平方英尺）：', className='option_label'),html.P(),
-                dcc.RangeSlider(min=300, max=6000, value=[2000, 4000], step=1, marks=None, id='1stFlr_query', tooltip={"placement": "bottom", "always_visible": True}),
+                dcc.RangeSlider(min=300, max=6000, value=[300, 6000], step=1, marks=None, id='1stFlr_query', tooltip={"placement": "bottom", "always_visible": True}),
                 html.P(),html.Label('二层总居住面积（平方英尺）：', className='option_label'),html.P(),
-                dcc.RangeSlider(min=0, max=2000, value=[0, 0], step=1, marks=None, id='2stFlr_query', tooltip={"placement": "bottom", "always_visible": True}),
+                dcc.RangeSlider(min=0, max=2000, value=[0, 1000], step=1, marks=None, id='2stFlr_query', tooltip={"placement": "bottom", "always_visible": True}),
                 html.P(),html.Label('地下室总面积（平方英尺）：', className='option_label'),html.P(),
-                dcc.RangeSlider(min=0, max=6000, value=[0, 0], step=1, marks=None, id='TotBsm_query', tooltip={"placement": "bottom", "always_visible": True}),
+                dcc.RangeSlider(min=0, max=6000, value=[0, 6000], step=1, marks=None, id='TotBsm_query', tooltip={"placement": "bottom", "always_visible": True}),
                 html.P(),html.Label('房价（美元）：', className='option_label'),html.P(),
                 dcc.RangeSlider(min=30000, max=800000, value=[100000, 500000], step=1, marks=None, id='price_query', tooltip={"placement": "bottom", "always_visible": True})
             ]),
@@ -388,6 +411,7 @@ def parse_contents(contents, filename):
             df = pd.read_excel(io.BytesIO(decoded), sheet_name='Sheet1')
     except Exception as e:
         print(e)
+        df = pd.DataFrame()
         return html.Div([
             'There was an error processing this file.'
         ])
@@ -421,8 +445,9 @@ def able(x):
         return True
 
 def predict_precise(df, algorithm):
-    num_index = df.columns[df.dtypes != object].delete(0)
-    text_index = df.columns[df.dtypes == object]
+    num_index = df.columns[df.dtypes != object]
+    text_index = df.columns[df.dtypes == object].delete(0)
+    print(df)
     num_index = np.array(num_index)
     text_data = enc1.transform(df[text_index])
     for column in num_index:
@@ -446,21 +471,22 @@ def predict_precise(df, algorithm):
 def output(n, algorithm):
     global df, df_result
     if not df.empty:
-        # df1 = df.copy(deep=True)
-        # for col in df1.columns:
-        #     try:
-        #         df1[col] = df1[col].replace(eval('dict_'+col))
-        #     except:
-        #         pass
-        df1 = pd.read_csv('./test.csv')
-        df_result = predict_precise(df1, algorithm)
-        return  dash_table.DataTable(
-            df_result.to_dict('records'),
-            [{'name': i, 'id': i} for i in df_result.columns],
-            style_table={'overflowX': 'auto', 'overflowY': 'auto'},
-            editable=False,
-            style_cell={'textAlign': 'center'}
-        )
+        df1 = df.copy(deep=True)
+        for col in df1.columns:
+            try:
+                df1[col] = df1[col].replace(eval('dict_'+col))
+            except:
+                pass
+        try:
+            df_result = predict_precise(df1, algorithm)
+            return  dash_table.DataTable(
+                df_result.to_dict('records'),
+                [{'name': i, 'id': i} for i in df_result.columns],
+                style_table={'overflowX': 'auto', 'overflowY': 'auto'},
+                editable=False,
+                style_cell={'textAlign': 'center'})
+        except Exception as e:
+            return html.P('Error:'+str(e))
 
 @app.callback(Output('download-result', 'data'),
               Input('download2', 'n_clicks'),
@@ -491,7 +517,8 @@ def able2(x):
                State('1stFlr_query', 'value'),
                State('2stFlr_query', 'value'),
                State('TotBsm_query', 'value'),
-               State('price_query', 'value')])
+               State('price_query', 'value')],
+              prevent_initial_call=True)
 def query(n, ng, oa, tr_value, f1_value, f2_value, tb_value, pr_value):
     global df_query, df_source
     ng = dict_Neighborhood[ng]

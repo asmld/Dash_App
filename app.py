@@ -249,9 +249,9 @@ def render_content(tab):
             ]),
             html.P(),
             html.Div([
-                html.Button('开始预测', id='button1',style={'margin-right': '20px'}),
+                html.Button('开始预测', id='button1',style={'margin-right': '20px','margin-bottom': '10px'}),
                 dcc.Input(placeholder='......', type='text', value='', disabled=True, id='result1',style={'margin-right': '20px'}),
-                html.Button('清除结果', id='clear1')
+                html.Button('清除结果', id='clear1',style={'margin-top': '10px'})
             ],style={'text-align': 'center'})
         ],className='t-content')
     elif tab == 'tab-2':
@@ -445,9 +445,24 @@ def able(x):
         return True
 
 def predict_precise(df, algorithm):
-    num_index = df.columns[df.dtypes != object]
-    text_index = df.columns[df.dtypes == object].delete(0)
-    print(df)
+    num_index = ['MSSubClass', 'LotFrontage', 'LotArea', 'OverallQual', 'OverallCond',
+                 'YearBuilt', 'YearRemodAdd', 'MasVnrArea', 'BsmtFinSF1', 'BsmtFinSF2',
+                 'BsmtUnfSF', 'TotalBsmtSF', '1stFlrSF', '2ndFlrSF', 'LowQualFinSF',
+                 'GrLivArea', 'BsmtFullBath', 'BsmtHalfBath', 'FullBath', 'HalfBath',
+                 'BedroomAbvGr', 'KitchenAbvGr', 'TotRmsAbvGrd', 'Fireplaces',
+                 'GarageYrBlt', 'GarageCars', 'GarageArea', 'WoodDeckSF', 'OpenPorchSF',
+                 'EnclosedPorch', '3SsnPorch', 'ScreenPorch', 'PoolArea', 'MiscVal',
+                 'MoSold', 'YrSold']
+    text_index = ['MSZoning', 'Street', 'Alley', 'LotShape', 'LandContour', 'Utilities',
+                  'LotConfig', 'LandSlope', 'Neighborhood', 'Condition1', 'Condition2',
+                  'BldgType', 'HouseStyle', 'RoofStyle', 'RoofMatl', 'Exterior1st',
+                  'Exterior2nd', 'MasVnrType', 'ExterQual', 'ExterCond', 'Foundation',
+                  'BsmtQual', 'BsmtCond', 'BsmtExposure', 'BsmtFinType1', 'BsmtFinType2',
+                  'Heating', 'HeatingQC', 'CentralAir', 'Electrical', 'KitchenQual',
+                  'Functional', 'FireplaceQu', 'GarageType', 'GarageFinish', 'GarageQual',
+                  'GarageCond', 'PavedDrive', 'PoolQC', 'Fence', 'MiscFeature',
+                  'SaleType', 'SaleCondition']
+
     num_index = np.array(num_index)
     text_data = enc1.transform(df[text_index])
     for column in num_index:

@@ -1,3 +1,5 @@
+from numpy import nan
+
 dict_MSSubClass = {
     '1-STORY 1946 & NEWER ALL STYLES': 20,
     '1-STORY 1945 & OLDER':30,
@@ -35,7 +37,7 @@ dict_Street = {
 dict_Alley = {
     'Gravel':'Grvl',
     'Paved':'Pave',
-    'No alley access':'NA'
+    'No alley access': nan
 }
 #%%
 dict_LotShape = {
@@ -251,7 +253,7 @@ dict_BsmtQual = {
     'Good (90-99 inches)':'Gd',
     'Typical (80-89 inches)':'TA',
     'Fair (70-79 inches)':'Fa',
-    'No Basement':'NA'
+    'No Basement':nan
 }
 #%%
 dict_BsmtCond = {
@@ -259,7 +261,7 @@ dict_BsmtCond = {
     'Typical':'TA',
     'Fair':'Fa',
     'Poor':'Po',
-    'No Basement':'NA'
+    'No Basement':nan
 }
 #%%
 dict_BsmtExposure = {
@@ -267,7 +269,7 @@ dict_BsmtExposure = {
     'Average Exposure (split levels or foyers typically score average or above)':'Av',
     'Mimimum Exposure':'Mn',
     'No Exposure':'No',
-    'No Basement':'NA'
+    'No Basement':nan
 }
 #%%
 dict_BsmtFinType1 = {
@@ -277,7 +279,7 @@ dict_BsmtFinType1 = {
     'Average Rec Room':'Rec',
     'Low Quality':'LwQ',
     'Unfinshed':'Unf',
-    'No Basement':'NA'
+    'No Basement':nan
 }
 #%%
 dict_BsmtFinType2 = {
@@ -287,7 +289,7 @@ dict_BsmtFinType2 = {
     'Average Rec Room':'Rec',
     'Low Quality':'LwQ',
     'Unfinshed':'Unf',
-    'No Basement':'NA'
+    'No Basement':nan
 }
 #%%
 dict_Heating = {
@@ -343,7 +345,7 @@ dict_FireplaceQu = {
     'Average - Prefabricated Fireplace in main living area or Masonry Fireplace in basement':'TA',
     'Fair - Prefabricated Fireplace in basement':'Fa',
     'Poor - Ben Franklin Stove':'Po',
-    'No Fireplace':'NA'
+    'No Fireplace':nan
 }
 #%%
 dict_GarageType = {
@@ -353,14 +355,14 @@ dict_GarageType = {
     'Built-In (Garage part of house - typically has room above garage)':'BuiltIn',
     'Car Port':'CarPort',
     'Detached from home':'Detchd',
-    'No Garage':'NA'
+    'No Garage':nan
 }
 #%%
 dict_GarageFinish = {
     'Finished':'Fin',
     'Rough Finished':'RFn',
     'Unfinished':'Unf',
-    'No Garage':'NA'
+    'No Garage':nan
 }
 #%%
 dict_GarageQual = {
@@ -369,7 +371,7 @@ dict_GarageQual = {
     'Typical/Average':'TA',
     'Fair':'Fa',
     'Poor':'Po',
-    'No Garage':'NA'
+    'No Garage':nan
 }
 #%%
 dict_GarageCond = {
@@ -378,7 +380,7 @@ dict_GarageCond = {
     'Typical/Average':'TA',
     'Fair':'Fa',
     'Poor':'Po',
-    'No Garage':'NA'
+    'No Garage':nan
 }
 #%%
 dict_PavedDrive = {
@@ -391,7 +393,7 @@ dict_PoolQC = {
     'Excellent':'Ex',
     'Good':'Gd',
     'Fair':'Fa',
-    'No Pool':'NA'
+    'No Pool':nan
 }
 #%%
 dict_Fence = {
@@ -399,7 +401,7 @@ dict_Fence = {
     'Minimum Privacy':'MnPrv',
     'Typical/Average':'GdWo',
     'Fair':'MnWw',
-    'No Pool':'NA'
+    'No Fence':nan
 }
 #%%
 dict_MiscFeature = {
@@ -407,7 +409,7 @@ dict_MiscFeature = {
     'Other':'Othr',
     'Shed (over 100 SF)':'Shed',
     'Tennis Court':'TenC',
-    'None':'NA'
+    'None':nan
 }
 #%%
 dict_SaleType = {
